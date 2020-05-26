@@ -15,6 +15,6 @@ contract Voting
 		votesForCandidate[candidate]++;
 		voted[msg.sender] = true;
 
-		emit Voted(msg.sender, candidate)
+		emit Voted(msg.sender, candidate);
 	}
 }
