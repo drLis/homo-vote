@@ -2,13 +2,13 @@ pragma solidity >=0.6.0;
 
 contract Voting
 {
-	event Voted(address voter, uint candidate);
+	event Voted(address voter, address indexed candidate);
 
 	mapping (address => bool) public voted;
-	
-	uint[4] public votesForCandidate;
 
-	function vote(uint candidate) public
+	mapping (address => uint) public votesForCandidate;
+
+	function vote(address candidate) public
 	{
 		require(voted[msg.sender] == false, "You must vote only one times!");
 
