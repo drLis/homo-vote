@@ -4,6 +4,8 @@ contract Voting
 {
 	event Voted(address voter, uint[4] voteVector);
 
+	uint constant n = 10;
+
 	mapping (address => bool) public voted;
 
 	mapping (uint => uint) public summaryVoteVector;
@@ -11,6 +13,7 @@ contract Voting
 	function vote(uint[4] memory voteVector) public
 	{
 		require(voted[msg.sender] == false, "You must vote only one times!");
+		require(voteVector[0] + voteVector[1] + voteVector[2] + voteVector[3] == n, "Sum of shares must be whole.");
 
 		for (uint i = 0; i < 4; i++)
 			summaryVoteVector[i] += voteVector[i];
