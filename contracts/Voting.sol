@@ -4,23 +4,37 @@ import "./_lib/SolidityHomomorphicHiding/contracts/HomomorphicHiding.sol";
 
 contract Voting
 {
+	using HomomorphicHiding for E;
+
 	event Voted(address voter, uint[4] voteVector);
 
 	uint constant public n = 10;
 
 	mapping (address => bool) public voted;
 
-	mapping (uint => uint) public summaryVoteVector;
+	mapping (uint => E) public summaryVoteVector;
 
-	function vote(uint[4] memory voteVector) public
+	function vote(uint[2][4] memory input) public
 	{
 		require(voted[msg.sender] == false, "You must vote only one times!");
-		require(voteVector[0] + voteVector[1] + voteVector[2] + voteVector[3] == n, "Sum of shares must be whole.");
+		E[4] memory voteVector;
+		for (uint i = 0; i < 4; i++)
+		{
+			voteVector[i] = readE(input[i]);
+		}
+
+		require(voteVector[0].add(voteVector[1]).add(voteVector[2]).add(voteVector[3]).equals(HomomorphicHiding.e(n)), "Sum of shares must be whole.");
 
 		for (uint i = 0; i < 4; i++)
 			summaryVoteVector[i] += voteVector[i];
 		voted[msg.sender] = true;
 
 		emit Voted(msg.sender, voteVector);
+	}
+
+	function readE(uint[2] memory input) internal pure returns (E memory e)
+	{
+		e.x = input[0];
+		e.y = input[1];
 	}
 }
