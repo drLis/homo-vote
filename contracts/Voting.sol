@@ -1,5 +1,7 @@
 pragma solidity >=0.6.0;
 
+import "./_lib/SolidityHomomorphicHiding/contracts/HomomorphicHiding.sol";
+
 contract Voting
 {
 	event Voted(address voter, uint[4] voteVector);
