@@ -38,9 +38,22 @@ contract Voting
 		emit Voted(msg.sender);
 	}
 
+	function check(uint[4] memory summaryVector) public view returns (bool result)
+	{
+		result = true;
+		for (uint i = 0; i < 4; i++)
+			result = result && summaryVoteVector[i].equals(HomomorphicHiding.e(summaryVector[i]));
+	}
+
 	function readE(uint[2] memory input) internal pure returns (E memory e)
 	{
 		e.x = input[0];
 		e.y = input[1];
+	}
+
+	function e(uint value) public pure returns (uint x, uint y)
+	{
+		E memory e = HomomorphicHiding.e(value);
+		return (e.x, e.y);
 	}
 }
