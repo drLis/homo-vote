@@ -4,7 +4,7 @@ contract Voting
 {
 	event Voted(address voter, uint[4] voteVector);
 
-	uint constant n = 10;
+	uint constant public n = 10;
 
 	mapping (address => bool) public voted;
 
